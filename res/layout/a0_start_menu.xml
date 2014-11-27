@@ -1,0 +1,61 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/a0_tableLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/a0_headerTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_headerTV"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/a0_simpleBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_simpleBtn" />
+
+    <Button
+        android:id="@+id/a0_variantsBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_variantsBtn" />
+
+    <Button
+        android:id="@+id/a0_continueBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_continueBtn" />
+
+    <Button
+        android:id="@+id/a0_easyBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_easyBtn"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/a0_mediumBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_mediumBtn"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/a0_hardBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/a0_hardBtn"
+        android:visibility="gone" />
+
+</TableLayout>

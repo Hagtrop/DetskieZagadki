@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/a1_progressTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/a1_progressTV" />
+
+        <TextView
+            android:id="@+id/a1_levelTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/a1_levelTV" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/a1_timeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a1_timeTV" />
+
+    <TextView
+        android:id="@+id/a1_questionTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/a1_questionTV" />
+
+    <LinearLayout
+        android:id="@+id/a1_answerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/a1_answerBtn1"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn2"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn3"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn4"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn5"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn6"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn7"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn8"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn9"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/a1_answerBtn10"
+            style="@style/AnswerLetterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/a1_answerTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/a1_answerTV" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <Button
+                android:id="@+id/a1_letterBtn1"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn2"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn3"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn4"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn5"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <Button
+                android:id="@+id/a1_letterBtn6"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn7"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn8"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn9"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn10"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <Button
+                android:id="@+id/a1_letterBtn11"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn12"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn13"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn14"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/a1_letterBtn15"
+                style="@style/AnswerLetterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/a1_checkBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/a1_checkBtn" />
+
+</LinearLayout>
