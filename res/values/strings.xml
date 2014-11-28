@@ -17,4 +17,11 @@
     <string name="a1_answerTV">Текст ответа</string>
     <string name="a1_checkBtn">Проверить</string>
     <string name="a1_nextBtn">Дальше</string>
+    
+    <string name="good_game_message">Поздравляем!\nВы отгадали все загадки.</string>
+    <string name="good_game_okBtn">Я молодец!</string>
+    <string name="false_message">Неверно!</string>
+    <string name="time_is_over_message">Ваше время вышло!</string>
+    <string name="time_is_over_dialog_okBtn">В главное меню</string>
+    <string name="true_message">Поздравляем!\nВы ответили верно.</string>
 </resources>
