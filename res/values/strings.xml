@@ -18,10 +18,13 @@
     <string name="a1_checkBtn">Проверить</string>
     <string name="a1_nextBtn">Дальше</string>
     
-    <string name="good_game_message">Поздравляем!\nВы отгадали все загадки.</string>
-    <string name="good_game_okBtn">Я молодец!</string>
-    <string name="false_message">Неверно!</string>
-    <string name="time_is_over_message">Ваше время вышло!</string>
-    <string name="time_is_over_dialog_okBtn">В главное меню</string>
-    <string name="true_message">Поздравляем!\nВы ответили верно.</string>
+    <string name="d0_falseTV">Неверно!</string>
+    
+    <string name="d1_trueTV">Поздравляем!\nВы ответили верно.</string>
+    
+    <string name="d2_timeIsOverTV">Ваше время вышло!</string>
+    <string name="d2_timeIsOverOkBtn">В главное меню</string>
+    
+    <string name="d3_goodGameTV">Поздравляем!\nВы отгадали все загадки.</string>
+    <string name="d3_goodGameOkBtn">Я молодец!</string>
 </resources>

@@ -37,7 +37,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	private AnswerButtonsArray answerBtns;
 	private char[] answerLetters;
 	private int focusBtnNum = 0;
-	private Question currentQuestion;
+	//private Question currentQuestion;
 	private BaseHelper baseHelper;
 	private Handler handler;
 	private MyTimer timer;
@@ -49,8 +49,12 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		setContentView(R.layout.a1_simple_game);
 		
 		Bundle extras = getIntent().getExtras();
-		if(extras != null) gameInfo = new GameInfo(extras.getBoolean("timer"));
-		else gameInfo = new GameInfo(false);
+		if(extras != null){
+			gameInfo = new GameInfo(
+					extras.getBoolean("useTimer"),
+					extras.getBoolean("useAttemptsLimit"));
+		}
+		else gameInfo = new GameInfo(false, false);
 		
 		progressTV = (TextView) findViewById(R.id.a1_progressTV);
 		levelTV = (TextView) findViewById(R.id.a1_levelTV);
@@ -176,16 +180,23 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		//Извлекаем вопрос и ответ
 		case QUESTION_LOADER:
 			if(cursor.moveToFirst()){
-				currentQuestion = new Question(
-						cursor.getString(cursor.getColumnIndex("question")).replace("\\n", "\n"),
+				gameInfo.newQue(
+						cursor.getString(cursor.getColumnIndex("question")).replace("\\n", "\n"), 
 						cursor.getString(cursor.getColumnIndex("answer")).trim().toUpperCase(new Locale("ru")),
 						cursor.getInt(cursor.getColumnIndex("level")));
 				
+				Log.d("mLog", "index = " + gameInfo.getQueIndex());
+				
+				/*currentQuestion = new Question(
+						cursor.getString(cursor.getColumnIndex("question")).replace("\\n", "\n"),
+						cursor.getString(cursor.getColumnIndex("answer")).trim().toUpperCase(new Locale("ru")),
+						cursor.getInt(cursor.getColumnIndex("level")));*/
+				
 				progressTV.setText(getString(R.string.a1_progressTV) + " " + (gameInfo.getQueIndex()+1) + "/" + queStatusList.size());
-				levelTV.setText(getString(R.string.a1_levelTV) + " " + currentQuestion.getLevel());
-				questionTV.setText(currentQuestion.getQuestion());
-				answerTV.setText(currentQuestion.getAnswer());
-				answerLetters = currentQuestion.getAnswer().toCharArray();
+				levelTV.setText(getString(R.string.a1_levelTV) + " " + gameInfo.getQueLevel());
+				questionTV.setText(gameInfo.getQuestion());
+				answerTV.setText(gameInfo.getAnswer());
+				answerLetters = gameInfo.getAnswer().toCharArray();
 				answerBtns.setVisible(answerLetters.length);
 				
 				//Создаём массив вариантов букв
@@ -275,7 +286,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.a1_checkBtn:
-			if(answerBtns.getPlayerAnswer().equals(currentQuestion.getAnswer())){
+			if(answerBtns.getPlayerAnswer().equals(gameInfo.getAnswer())){
 				gameInfo.goodAnswer(true);
 				//Вывод следующего вопроса в методе onDialogDismiss
 			}
@@ -334,7 +345,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 			if(gameInfo.goodAnswer()){
 				//Загружаем следующий вопрос
 				if(gameInfo.getQueIndex() < queStatusList.size()-1){
-					gameInfo.nextQue();
+					gameInfo.setQueIndex(gameInfo.getQueIndex()+1);
 					loadQuestion(queStatusList.get(gameInfo.getQueIndex()).getId());
 					checkBtn.setEnabled(false);
 					Log.d("mLog", "currentQueIndex=" + gameInfo.getQueIndex());

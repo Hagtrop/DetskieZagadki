@@ -28,8 +28,8 @@ public class GoodGameDialog extends DialogFragment implements OnClickListener{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.good_game_dialog, container);
-		view.findViewById(R.id.good_game_dialog_okBtn).setOnClickListener(this);
+		View view = inflater.inflate(R.layout.d3_good_game, container);
+		view.findViewById(R.id.d3_goodGameOkBtn).setOnClickListener(this);
 		return view;
 	}
 
@@ -59,7 +59,7 @@ public class GoodGameDialog extends DialogFragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()){
-		case R.id.good_game_dialog_okBtn:
+		case R.id.d3_goodGameOkBtn:
 			this.dismiss();
 			break;
 		default: break;

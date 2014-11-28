@@ -1,6 +1,6 @@
 package com.hagtrop.detskiezagadki;
 
-class Question{
+/*class Question{
 	private final String question, answer;
 	private final int level;
 	public Question(String question, String answer, int level){
@@ -17,4 +17,4 @@ class Question{
 	public int getLevel(){
 		return level;
 	}
-}
+}*/

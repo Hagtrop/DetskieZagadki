@@ -30,8 +30,8 @@ public class TimeIsOverDialog extends DialogFragment implements OnClickListener{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.time_is_over_dialog, container, false);
-		view.findViewById(R.id.time_is_over_dialog_okBtn).setOnClickListener(this);
+		View view = inflater.inflate(R.layout.d2_time_is_over, container, false);
+		view.findViewById(R.id.d2_timeIsOverOkBtn).setOnClickListener(this);
 		return view;
 	}
 	
@@ -61,7 +61,7 @@ public class TimeIsOverDialog extends DialogFragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()){
-		case R.id.time_is_over_dialog_okBtn:
+		case R.id.d2_timeIsOverOkBtn:
 			this.dismiss();
 			break;
 		default: break;

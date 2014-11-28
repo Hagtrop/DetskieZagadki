@@ -1,6 +1,7 @@
 package com.hagtrop.detskiezagadki;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +43,6 @@ public class StartMenuActivity extends Activity implements OnClickListener{
         
         hardBtn = (Button) findViewById(R.id.a0_hardBtn);
         hardBtn.setOnClickListener(this);
-        
     }
 
 	@Override
@@ -51,40 +51,62 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		switch(v.getId()){
 		case R.id.a0_simpleBtn:
 			gameType = SIMPLE_GAME;
-			setDifficultyOptionsVisible();
+			setDifficultyLevelsVisible(true);
 			break;
 		case R.id.a0_variantsBtn:
 			gameType = TEST_GAME;
-			setDifficultyOptionsVisible();
+			setDifficultyLevelsVisible(true);
 			break;
 		case R.id.a0_continueBtn:
 			break;
 		case R.id.a0_easyBtn:
-			startNewGame(gameType, EASY_GAME);
+			startNewGame(gameType, false, false);
 			break;
 		case R.id.a0_mediumBtn:
-			startNewGame(gameType, MEDIUM_GAME);
+			startNewGame(gameType, true, false);
 			break;
 		case R.id.a0_hardBtn:
-			startNewGame(gameType, HARD_GAME);
+			startNewGame(gameType, true, true);
 			break;
 		default: break;
 		}
 	}
 	
-	private void setDifficultyOptionsVisible(){
-		//Скрываем кнопки выбора режима игры
-		simpleBtn.setVisibility(View.GONE);
-		variantsBtn.setVisibility(View.GONE);
-		continueBtn.setVisibility(View.GONE);
-		//Отображаем кнопки выбора сложности
-		headerTV.setVisibility(View.VISIBLE);
-		easyBtn.setVisibility(View.VISIBLE);
-		mediumBtn.setVisibility(View.VISIBLE);
-		hardBtn.setVisibility(View.VISIBLE);
+	private void setDifficultyLevelsVisible(boolean visible){
+		int types, levels;
+		if(visible){
+			types = View.GONE;
+			levels = View.VISIBLE;
+		}
+		else{
+			types = View.VISIBLE;
+			levels = View.GONE;
+		}
+		
+		//Скрываем/отображаем кнопки выбора режима игры
+		simpleBtn.setVisibility(types);
+		variantsBtn.setVisibility(types);
+		continueBtn.setVisibility(types);
+		//Отображаем/скрываем кнопки выбора сложности
+		headerTV.setVisibility(levels);
+		easyBtn.setVisibility(levels);
+		mediumBtn.setVisibility(levels);
+		hardBtn.setVisibility(levels);
 	}
 	
-	private void startNewGame(int gameType, int gameDifficulty){
+	private void startNewGame(int gameType, boolean useTimer, boolean useAttemptsLimit){
+		Intent intent = new Intent();
+		switch(gameType){
+		case SIMPLE_GAME:
+			intent.setClass(this, SimpleGame.class);
+			break;
+		case TEST_GAME:
+			break;
+		default: break;
+		}
+		intent.putExtra("useTimer", useTimer);
+		intent.putExtra("useAttemptsLimit", useAttemptsLimit);
 		
+		startActivity(intent);
 	}
 }

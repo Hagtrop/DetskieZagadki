@@ -34,8 +34,8 @@ public class TrueFalseDialog extends DialogFragment {
 	}
 
 	public TrueFalseDialog(boolean answerTrue){
-		if(answerTrue) this.layoutId = R.layout.true_dialog;
-		else this.layoutId = R.layout.false_dialog;
+		if(answerTrue) this.layoutId = R.layout.d1_true;
+		else this.layoutId = R.layout.d0_false;
 	}
 	
 	@Override
