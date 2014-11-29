@@ -20,7 +20,15 @@ import android.util.Log;
 public class BaseHelper extends SQLiteOpenHelper {
 
 	private Context mContext;
+	
 	private static final String BASE_NAME = "zagadkiDB";
+	private static final String EASY_SIMPLE_GAME = "easy_simple_game";
+	private static final String MEDIUM_SIMPLE_GAME = "medium_simple_game";
+	private static final String HARD_SIMPLE_GAME = "hard_simple_game";
+	private static final String EASY_TEST_GAME = "easy_test_game";
+	private static final String MEDIUM_TEST_GAME = "medium_test_game";
+	private static final String HARD_TEST_GAME = "hard_test_game";
+	
 	private static File BASE_FILE;
 	private static BaseHelper bhInstance;
 	private boolean simpleGameExists = false;
@@ -214,6 +222,32 @@ public class BaseHelper extends SQLiteOpenHelper {
 		cv.put("attempts", attempts);
 		cv.put("status", status);
 		database.update("test_game", cv, "question_id=?", new String[]{String.valueOf(queId)});
+	}
+	
+	private void deleteOldGames(){
+		SQLiteDatabase database = getWritableDatabase();
+		//Удаляем все таблицы незавершённых игр, если такие существуют
+		database.execSQL("DROP TABLE IF EXISTS " + EASY_SIMPLE_GAME);
+		database.execSQL("DROP TABLE IF EXISTS " + MEDIUM_SIMPLE_GAME);
+		database.execSQL("DROP TABLE IF EXISTS " + HARD_SIMPLE_GAME);
+		
+		database.execSQL("DROP TABLE IF EXISTS " + EASY_TEST_GAME);
+		database.execSQL("DROP TABLE IF EXISTS " + MEDIUM_TEST_GAME);
+		database.execSQL("DROP TABLE IF EXISTS " + HARD_TEST_GAME);
+		
+		database.close();
+	}
+	
+	void getTableList(){
+		SQLiteDatabase database = getWritableDatabase();
+		Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+		if(cursor.moveToFirst()){
+			do{
+				String name = cursor.getString(0);
+				Log.d("mLog", name);
+			}
+			while(cursor.moveToNext());
+		}
 	}
 
 }

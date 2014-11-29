@@ -2,6 +2,7 @@ package com.hagtrop.detskiezagadki;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +44,9 @@ public class StartMenuActivity extends Activity implements OnClickListener{
         
         hardBtn = (Button) findViewById(R.id.a0_hardBtn);
         hardBtn.setOnClickListener(this);
+        
+        BaseHelper baseHelper = BaseHelper.getInstance(this);
+        baseHelper.getTableList();
     }
 
 	@Override
@@ -107,6 +111,13 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		intent.putExtra("useTimer", useTimer);
 		intent.putExtra("useAttemptsLimit", useAttemptsLimit);
 		
-		startActivity(intent);
+		startActivityForResult(intent, 1);
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		setDifficultyLevelsVisible(false);
+	}
+	
+	
 }
