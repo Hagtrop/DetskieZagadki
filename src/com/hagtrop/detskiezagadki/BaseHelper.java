@@ -70,54 +70,6 @@ public class BaseHelper extends SQLiteOpenHelper {
 
 	}
 	
-	public void deleteSimpleGame(boolean useTimer){
-		if(useTimer) simpleTimerGameExists = false;
-		else simpleGameExists = false;
-	}
-	
-	public void newSimpleGame(boolean useTimer){
-		Log.d("mLog", "In newSimpleGame()");
-		String deleteQuery, createQuery;
-		if(useTimer) tableName = "simple_timer_game";
-		else tableName = "simple_game";
-		deleteQuery = "DROP TABLE IF EXISTS " + tableName;
-		createQuery = "CREATE TABLE " + tableName + "(question_id INTEGER, status INTEGER DEFAULT 0, time INTEGER DEFAULT 0)";
-		SQLiteDatabase database = getWritableDatabase();
-		database.execSQL(deleteQuery);
-		database.execSQL(createQuery);
-		
-		//Загружаем данные из таблицы вопросов, сортируем вопросы и наполняем отсортированным списком таблицу simple_game
-		Cursor cursor = database.query("questions", new String[]{"questions._id", "questions.level", "questions.answer_id"}, null, null, null, null, null);
-		if(cursor.moveToFirst()){
-			ArrayList<QueParams> quesParams = new ArrayList<QueParams>();
-			int queId, queLevel, answerId;
-			do{
-				queId = cursor.getInt(cursor.getColumnIndex("_id"));
-		        queLevel = cursor.getInt(cursor.getColumnIndex("level"));
-		        answerId = cursor.getInt(cursor.getColumnIndex("answer_id"));
-		        quesParams.add(new QueParams(queId, queLevel, answerId));
-			} while(cursor.moveToNext());
-			Collections.sort(quesParams);
-			ContentValues cv;
-			database.beginTransaction();
-			try{
-				for(QueParams params : quesParams){
-					cv = new ContentValues();
-					cv.put("question_id", params.queId);
-					database.insert(tableName, null, cv);
-				}
-				database.setTransactionSuccessful();
-			}
-			finally{
-				database.endTransaction();
-			}
-			
-		}
-		database.close();
-		if(useTimer) simpleTimerGameExists = true;
-		else simpleGameExists = true;
-	}
-	
 	public void deleteTestGame(){
 		testGameExists = false;
 	}
@@ -224,8 +176,64 @@ public class BaseHelper extends SQLiteOpenHelper {
 		database.update("test_game", cv, "question_id=?", new String[]{String.valueOf(queId)});
 	}
 	
-	private void deleteOldGames(){
+	//-------------------------------------------------------------------------//
+	
+	void newGame(String tableName){
+		         
+	}
+	
+	void newGame(int gameType, boolean useAttempts, boolean useTimer){
 		SQLiteDatabase database = getWritableDatabase();
+		deleteOldGames(database);
+		String tableName = EASY_SIMPLE_GAME;
+		//Определяем имя таблицы по характеристикам игры
+		switch(gameType){
+		case StartMenuActivity.SIMPLE_GAME:
+			if(!useAttempts && !useTimer) tableName = EASY_SIMPLE_GAME;
+			else if(useAttempts && !useTimer) tableName = MEDIUM_SIMPLE_GAME;
+			else if(useAttempts && useTimer) tableName = HARD_SIMPLE_GAME;
+			break;
+		case StartMenuActivity.TEST_GAME:
+			if(!useAttempts && !useTimer) tableName = EASY_TEST_GAME;
+			else if(useAttempts && !useTimer) tableName = MEDIUM_TEST_GAME;
+			else if(useAttempts && useTimer) tableName = HARD_TEST_GAME;
+			break;
+		default: break;
+		}
+		String createQuery = "CREATE TABLE " + tableName + "(question_id INTEGER, status INTEGER DEFAULT 0, attempts INTEGER DEFAULT 0, time INTEGER DEFAULT 0)";
+		database.execSQL(createQuery);
+		
+		//Загружаем данные из таблицы вопросов, сортируем вопросы и наполняем отсортированным списком таблицу simple_game
+		Cursor cursor = database.query("questions", new String[]{"questions._id", "questions.level", "questions.answer_id"}, null, null, null, null, null);
+		if(cursor.moveToFirst()){
+			ArrayList<QueParams> quesParams = new ArrayList<QueParams>();
+			int queId, queLevel, answerId;
+			do{
+				queId = cursor.getInt(cursor.getColumnIndex("_id"));
+		        queLevel = cursor.getInt(cursor.getColumnIndex("level"));
+		        answerId = cursor.getInt(cursor.getColumnIndex("answer_id"));
+		        quesParams.add(new QueParams(queId, queLevel, answerId));
+			} while(cursor.moveToNext());
+			Collections.sort(quesParams);
+			ContentValues cv;
+			database.beginTransaction();
+			try{
+				for(QueParams params : quesParams){
+					cv = new ContentValues();
+					cv.put("question_id", params.queId);
+					database.insert("test_game", null, cv);
+				}
+				database.setTransactionSuccessful();
+			}
+			finally{
+				database.endTransaction();
+			}
+			
+		}
+		database.close();
+	}
+	
+	void deleteOldGames(SQLiteDatabase database){
 		//Удаляем все таблицы незавершённых игр, если такие существуют
 		database.execSQL("DROP TABLE IF EXISTS " + EASY_SIMPLE_GAME);
 		database.execSQL("DROP TABLE IF EXISTS " + MEDIUM_SIMPLE_GAME);
@@ -234,17 +242,16 @@ public class BaseHelper extends SQLiteOpenHelper {
 		database.execSQL("DROP TABLE IF EXISTS " + EASY_TEST_GAME);
 		database.execSQL("DROP TABLE IF EXISTS " + MEDIUM_TEST_GAME);
 		database.execSQL("DROP TABLE IF EXISTS " + HARD_TEST_GAME);
-		
-		database.close();
 	}
 	
 	void getTableList(){
 		SQLiteDatabase database = getWritableDatabase();
-		Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+		Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?, ?, ?, ?)", 
+				new String[]{EASY_SIMPLE_GAME, MEDIUM_SIMPLE_GAME, HARD_SIMPLE_GAME, EASY_TEST_GAME, MEDIUM_TEST_GAME, HARD_TEST_GAME});
 		if(cursor.moveToFirst()){
 			do{
 				String name = cursor.getString(0);
-				Log.d("mLog", name);
+				Log.d("mLog", "Game found: " + name);
 			}
 			while(cursor.moveToNext());
 		}

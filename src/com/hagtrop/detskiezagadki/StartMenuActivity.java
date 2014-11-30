@@ -10,15 +10,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StartMenuActivity extends Activity implements OnClickListener{
-	TextView headerTV;
-	Button simpleBtn, variantsBtn, continueBtn, easyBtn, mediumBtn, hardBtn;
+	private TextView headerTV;
+	private Button simpleBtn, variantsBtn, continueBtn, easyBtn, mediumBtn, hardBtn;
+	private int gameType = SIMPLE_GAME;
 	
 	public static final int SIMPLE_GAME = 1;
 	public static final int TEST_GAME = 2;
 	
-	public static final int EASY_GAME = 1;
+	/*public static final int EASY_GAME = 1;
 	public static final int MEDIUM_GAME = 2;
-	public static final int HARD_GAME = 3;
+	public static final int HARD_GAME = 3;*/   	
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +52,14 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		int gameType = SIMPLE_GAME;
 		switch(v.getId()){
 		case R.id.a0_simpleBtn:
 			gameType = SIMPLE_GAME;
-			setDifficultyLevelsVisible(true);
+			showDifficultyBtns(true);
 			break;
 		case R.id.a0_variantsBtn:
 			gameType = TEST_GAME;
-			setDifficultyLevelsVisible(true);
+			showDifficultyBtns(true);
 			break;
 		case R.id.a0_continueBtn:
 			break;
@@ -76,7 +76,7 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	private void setDifficultyLevelsVisible(boolean visible){
+	private void showDifficultyBtns(boolean visible){
 		int types, levels;
 		if(visible){
 			types = View.GONE;
@@ -98,9 +98,9 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		hardBtn.setVisibility(levels);
 	}
 	
-	private void startNewGame(int gameType, boolean useTimer, boolean useAttemptsLimit){
+	private void startNewGame(int type, boolean useAttemptsLimit, boolean useTimer){
 		Intent intent = new Intent();
-		switch(gameType){
+		switch(type){
 		case SIMPLE_GAME:
 			intent.setClass(this, SimpleGame.class);
 			break;
@@ -108,15 +108,16 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 			break;
 		default: break;
 		}
-		intent.putExtra("useTimer", useTimer);
+		intent.putExtra("createNewGame", true);
 		intent.putExtra("useAttemptsLimit", useAttemptsLimit);
+		intent.putExtra("useTimer", useTimer);
 		
 		startActivityForResult(intent, 1);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		setDifficultyLevelsVisible(false);
+		showDifficultyBtns(false);
 	}
 	
 	

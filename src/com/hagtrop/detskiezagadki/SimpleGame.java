@@ -105,11 +105,9 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		for(Button btn : lettersBtns) btn.setOnClickListener(lettersOnClickListener);
 				
 		baseHelper = BaseHelper.getInstance(this);
+		//Создаём таблицу новой игры, если требуется 
+		if(extras.getBoolean("createNewGame")) baseHelper.newGame(StartMenuActivity.SIMPLE_GAME, gameInfo.USE_ATTEMPTS_LIMIT, gameInfo.USE_TIMER);
 		
-		//Если игра сохранена - загружаем, если нет - создаём новую
-		if(!baseHelper.simpleGameExists(gameInfo.USE_TIMER)){
-			baseHelper.newSimpleGame(gameInfo.USE_TIMER);
-		}
 		database = baseHelper.getWritableDatabase();
 		getSupportLoaderManager().initLoader(ARRAY_LOADER, null, this);
 	}
@@ -257,7 +255,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	}
 	
 	void endGame(){
-		baseHelper.deleteSimpleGame(gameInfo.USE_TIMER);
+		baseHelper.deleteOldGames(database);
 		baseHelper.close();
 		finish();
 	}
