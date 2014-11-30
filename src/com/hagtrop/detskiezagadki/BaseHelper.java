@@ -31,8 +31,6 @@ public class BaseHelper extends SQLiteOpenHelper {
 	
 	private static File BASE_FILE;
 	private static BaseHelper bhInstance;
-	private boolean simpleGameExists = false;
-	private boolean simpleTimerGameExists = false;
 	private boolean testGameExists = false;
 	private String tableName;
 	
@@ -113,13 +111,6 @@ public class BaseHelper extends SQLiteOpenHelper {
 		testGameExists = true;
 	}
 	
-	
-	
-	public boolean simpleGameExists(boolean useTimer){
-		if(useTimer) return simpleTimerGameExists;
-		else return simpleGameExists;
-	}
-	
 	public boolean testGameExists(){
 		return testGameExists;
 	}
@@ -156,18 +147,6 @@ public class BaseHelper extends SQLiteOpenHelper {
 	    }
 	}
 	
-	void updateSimpleGame(int queId, int status, long time, boolean useTimer){
-		Log.d("mLog", "In updateSimpleGame(" + queId + ", " + status + ", " + time + ")");
-		SQLiteDatabase database = getWritableDatabase();
-		/*ContentValues cv = new ContentValues();
-		cv.put("status", 1);
-		database.update("simple_game", cv, "question_id=?", new String[]{String.valueOf(queId)});*/
-		database.execSQL("UPDATE " + tableName+ " SET status=?, time=time+? WHERE question_id=?", new String[]{
-				String.valueOf(status), 
-				String.valueOf(time), 
-				String.valueOf(queId)});
-	}
-	
 	void updateTestGame(int queId, int attempts, int status){
 		SQLiteDatabase database = getWritableDatabase();
 		ContentValues cv = new ContentValues();
@@ -178,28 +157,41 @@ public class BaseHelper extends SQLiteOpenHelper {
 	
 	//-------------------------------------------------------------------------//
 	
-	void newGame(String tableName){
-		         
+	String getTableName(){
+		return tableName;
+	}
+	
+	void updateGame(int queId, int status, int attempts, long time){
+		SQLiteDatabase database = getWritableDatabase();
+		database.execSQL("UPDATE " + tableName + " SET status=?, attempts=attempts+?, time=time+? WHERE question_id=?", new String[]{
+				String.valueOf(status), 
+				String.valueOf(attempts),
+				String.valueOf(time), 
+				String.valueOf(queId)});
+	}
+	
+	static public String getTableNameByGameType(int gameType, boolean useAttempts, boolean useTimer){
+		String name = null;
+		switch(gameType){
+		case StartMenuActivity.SIMPLE_GAME:
+			if(!useAttempts && !useTimer) name = EASY_SIMPLE_GAME;
+			else if(useAttempts && !useTimer) name = MEDIUM_SIMPLE_GAME;
+			else if(useAttempts && useTimer) name = HARD_SIMPLE_GAME;
+			break;
+		case StartMenuActivity.TEST_GAME:
+			if(!useAttempts && !useTimer) name = EASY_TEST_GAME;
+			else if(useAttempts && !useTimer) name = MEDIUM_TEST_GAME;
+			else if(useAttempts && useTimer) name = HARD_TEST_GAME;
+			break;
+		default: break;
+		}
+		return name;
 	}
 	
 	void newGame(int gameType, boolean useAttempts, boolean useTimer){
 		SQLiteDatabase database = getWritableDatabase();
 		deleteOldGames(database);
-		String tableName = EASY_SIMPLE_GAME;
-		//ќпредел€ем им€ таблицы по характеристикам игры
-		switch(gameType){
-		case StartMenuActivity.SIMPLE_GAME:
-			if(!useAttempts && !useTimer) tableName = EASY_SIMPLE_GAME;
-			else if(useAttempts && !useTimer) tableName = MEDIUM_SIMPLE_GAME;
-			else if(useAttempts && useTimer) tableName = HARD_SIMPLE_GAME;
-			break;
-		case StartMenuActivity.TEST_GAME:
-			if(!useAttempts && !useTimer) tableName = EASY_TEST_GAME;
-			else if(useAttempts && !useTimer) tableName = MEDIUM_TEST_GAME;
-			else if(useAttempts && useTimer) tableName = HARD_TEST_GAME;
-			break;
-		default: break;
-		}
+		tableName = getTableNameByGameType(gameType, useAttempts, useTimer);
 		String createQuery = "CREATE TABLE " + tableName + "(question_id INTEGER, status INTEGER DEFAULT 0, attempts INTEGER DEFAULT 0, time INTEGER DEFAULT 0)";
 		database.execSQL(createQuery);
 		
@@ -221,7 +213,7 @@ public class BaseHelper extends SQLiteOpenHelper {
 				for(QueParams params : quesParams){
 					cv = new ContentValues();
 					cv.put("question_id", params.queId);
-					database.insert("test_game", null, cv);
+					database.insert(tableName, null, cv);
 				}
 				database.setTransactionSuccessful();
 			}

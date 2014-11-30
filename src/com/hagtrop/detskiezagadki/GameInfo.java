@@ -6,8 +6,10 @@ public class GameInfo {
 	final boolean USE_TIMER, USE_ATTEMPTS_LIMIT;
 	private long timeLimit, timePassed, queTimePassed, timeLeft;
 	private int queIndex, queLevel;
+	private int attemptsLimit, attemptsSpent, queAttemptsSpent;
 	private boolean goodAnswer;
 	private String question, answer;
+	private boolean gameOver;
 	
 	GameInfo(boolean useTimer, boolean useAttemptsLimit){
 		USE_TIMER = useTimer;
@@ -17,7 +19,11 @@ public class GameInfo {
 		queTimePassed = 0;
 		timeLeft = 0;
 		queIndex = -1;
+		attemptsLimit = 0;
+		attemptsSpent = 0;
+		queAttemptsSpent = 0;
 		goodAnswer = false;
+		gameOver = false;
 	}
 	
 	void setTimeLimit(long millis){
@@ -70,6 +76,7 @@ public class GameInfo {
 		setAnswer(answer);
 		setQueLevel(level);
 		setQueTimePassed(0);
+		setQueAttemptsSpent(0);
 		goodAnswer(false);
 	}
 	
@@ -103,5 +110,50 @@ public class GameInfo {
 	
 	int getQueLevel(){
 		return queLevel;
+	}
+	
+	void setAttemptsLimit(int limit){
+		attemptsLimit = limit;
+	}
+	
+	int getAttemptsLimit(){
+		return attemptsLimit;
+	}
+	
+	void setAttemptsSpent(int count){
+		attemptsSpent = count;
+	}
+	
+	int getAttemptsSpent(){
+		return attemptsSpent;
+	}
+	
+	void setQueAttemptsSpent(int count){
+		queAttemptsSpent = count;
+	}
+	
+	int getQueAttemptsSpent(){
+		return queAttemptsSpent;
+	}
+	
+	void addAttemptsSpent(int count){
+		setAttemptsSpent(getAttemptsSpent() + count);
+	}
+	
+	void addQueAttemptsSpent(int count){
+		setQueAttemptsSpent(getQueAttemptsSpent() + count);
+		addAttemptsSpent(count);
+	}
+	
+	int getAttemptsRemaining(){
+		return getAttemptsLimit() - getAttemptsSpent();
+	}
+	
+	void setGameOver(boolean isOver){
+		gameOver = isOver;
+	}
+	
+	boolean gameOver(){
+		return gameOver;
 	}
 }

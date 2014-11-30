@@ -15,6 +15,7 @@
     <string name="a1_timeTV">00:00</string>
     <string name="a1_questionTV">Текст загадки</string>
     <string name="a1_answerTV">Текст ответа</string>
+    <string name="a1_attemptsTV">Попыток:</string>
     <string name="a1_checkBtn">Проверить</string>
     <string name="a1_nextBtn">Дальше</string>
     
@@ -27,4 +28,7 @@
     
     <string name="d3_goodGameTV">Поздравляем!\nВы отгадали все загадки.</string>
     <string name="d3_goodGameOkBtn">Я молодец!</string>
+    
+    <string name="d4_noAttemptsTV">У вас не осталось попыток.\nИгра окончена.</string>
+    <string name="d4_okBtn">Вернуться в меню</string>
 </resources>

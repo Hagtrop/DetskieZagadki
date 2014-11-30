@@ -241,6 +241,12 @@
         </TableRow>
     </TableLayout>
 
+    <TextView
+        android:id="@+id/a1_attemptsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a1_attemptsTV" />
+
     <Button
         android:id="@+id/a1_checkBtn"
         style="?android:attr/buttonStyleSmall"
