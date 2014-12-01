@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.util.Log;
 
 public class BaseHelper extends SQLiteOpenHelper {
@@ -236,17 +237,46 @@ public class BaseHelper extends SQLiteOpenHelper {
 		database.execSQL("DROP TABLE IF EXISTS " + HARD_TEST_GAME);
 	}
 	
-	void getTableList(){
+	Bundle getSaved(){
+		Bundle bundle = null;
 		SQLiteDatabase database = getWritableDatabase();
 		Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?, ?, ?, ?)", 
 				new String[]{EASY_SIMPLE_GAME, MEDIUM_SIMPLE_GAME, HARD_SIMPLE_GAME, EASY_TEST_GAME, MEDIUM_TEST_GAME, HARD_TEST_GAME});
 		if(cursor.moveToFirst()){
-			do{
-				String name = cursor.getString(0);
-				Log.d("mLog", "Game found: " + name);
+			String name = cursor.getString(0);
+			bundle = new Bundle();
+			if(name.equals(EASY_SIMPLE_GAME)){
+				bundle.putInt("gameType", StartMenuActivity.SIMPLE_GAME);
+				bundle.putBoolean("useAttemptsLimit", false);
+				bundle.putBoolean("useTimer", false);
 			}
-			while(cursor.moveToNext());
+			else if(name.equals(MEDIUM_SIMPLE_GAME)){
+				bundle.putInt("gameType", StartMenuActivity.SIMPLE_GAME);
+				bundle.putBoolean("useAttemptsLimit", true);
+				bundle.putBoolean("useTimer", false);
+			}
+			else if(name.equals(HARD_SIMPLE_GAME)){
+				bundle.putInt("gameType", StartMenuActivity.SIMPLE_GAME);
+				bundle.putBoolean("useAttemptsLimit", true);
+				bundle.putBoolean("useTimer", true);
+			}
+			else if(name.equals(EASY_TEST_GAME)){
+				bundle.putInt("gameType", StartMenuActivity.TEST_GAME);
+				bundle.putBoolean("useAttemptsLimit", false);
+				bundle.putBoolean("useTimer", false);
+			}
+			else if(name.equals(MEDIUM_TEST_GAME)){
+				bundle.putInt("gameType", StartMenuActivity.TEST_GAME);
+				bundle.putBoolean("useAttemptsLimit", true);
+				bundle.putBoolean("useTimer", false);
+			}
+			else if(name.equals(HARD_TEST_GAME)){
+				bundle.putInt("gameType", StartMenuActivity.TEST_GAME);
+				bundle.putBoolean("useAttemptsLimit", true);
+				bundle.putBoolean("useTimer", true);
+			}
 		}
+		return bundle;
 	}
 
 }

@@ -37,7 +37,6 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	private AnswerButtonsArray answerBtns;
 	private char[] answerLetters;
 	private int focusBtnNum = 0;
-	//private Question currentQuestion;
 	private BaseHelper baseHelper;
 	private Handler handler;
 	private MyTimer timer;
@@ -116,8 +115,6 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		database = baseHelper.getWritableDatabase();
 		getSupportLoaderManager().initLoader(ARRAY_LOADER, null, this);
 	}
-	
-	
 	
 	@Override
 	protected void onPause() {
@@ -290,6 +287,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.a1_checkBtn:
+			gameInfo.addQueAttemptsSpent(1);
 			if(answerBtns.getPlayerAnswer().equals(gameInfo.getAnswer())){
 				gameInfo.goodAnswer(true);
 				//Вывод следующего вопроса в методе onDialogDismiss
@@ -342,7 +340,6 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	@Override
 	public void onDialogDismiss(DialogFragment dialog, String dialogType) {
 		if(dialogType.equals(TrueFalseDialog.DIALOG_TYPE)){
-			gameInfo.addQueAttemptsSpent(1);
 			attemptsTV.setText("Попыток: " + gameInfo.getAttemptsRemaining());
 			if(gameInfo.USE_ATTEMPTS_LIMIT && gameInfo.getAttemptsRemaining() < 1 && !(gameInfo.getQueIndex() == queStatusList.size()-1 && gameInfo.goodAnswer())){
 				showNoAttemptsDialog();

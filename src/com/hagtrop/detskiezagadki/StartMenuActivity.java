@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class StartMenuActivity extends Activity implements OnClickListener{
+	Bundle savedGameInfo;
+	
 	private TextView headerTV;
 	private Button simpleBtn, variantsBtn, continueBtn, easyBtn, mediumBtn, hardBtn;
 	private int gameType = SIMPLE_GAME;
@@ -45,10 +48,17 @@ public class StartMenuActivity extends Activity implements OnClickListener{
         
         hardBtn = (Button) findViewById(R.id.a0_hardBtn);
         hardBtn.setOnClickListener(this);
-        
-        BaseHelper baseHelper = BaseHelper.getInstance(this);
-        baseHelper.getTableList();
     }
+    
+    @Override
+	protected void onResume() {
+		super.onResume();
+		BaseHelper baseHelper = BaseHelper.getInstance(this);
+        savedGameInfo = baseHelper.getSaved();
+        if(savedGameInfo != null) continueBtn.setEnabled(true);
+        else continueBtn.setEnabled(false);
+        baseHelper.close();
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -62,15 +72,16 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 			showDifficultyBtns(true);
 			break;
 		case R.id.a0_continueBtn:
+			startGame(savedGameInfo.getInt("gameType"), savedGameInfo.getBoolean("useAttemptsLimit"), savedGameInfo.getBoolean("useTimer"), false);
 			break;
 		case R.id.a0_easyBtn:
-			startNewGame(gameType, false, false);
+			startGame(gameType, false, false, true);
 			break;
 		case R.id.a0_mediumBtn:
-			startNewGame(gameType, true, false);
+			startGame(gameType, true, false, true);
 			break;
 		case R.id.a0_hardBtn:
-			startNewGame(gameType, true, true);
+			startGame(gameType, true, true, true);
 			break;
 		default: break;
 		}
@@ -98,7 +109,10 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		hardBtn.setVisibility(levels);
 	}
 	
-	private void startNewGame(int type, boolean useAttemptsLimit, boolean useTimer){
+	private void startGame(int type, boolean useAttemptsLimit, boolean useTimer, boolean newGame){
+		Log.d("mLog", "gameType: " + type);
+		Log.d("mLog", "useAttemptsLimit: " + useAttemptsLimit);
+		Log.d("mLog", "useTimer: " + useTimer);
 		Intent intent = new Intent();
 		switch(type){
 		case SIMPLE_GAME:
@@ -108,7 +122,7 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 			break;
 		default: break;
 		}
-		intent.putExtra("createNewGame", true);
+		intent.putExtra("createNewGame", newGame);
 		intent.putExtra("useAttemptsLimit", useAttemptsLimit);
 		intent.putExtra("useTimer", useTimer);
 		
