@@ -123,7 +123,11 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		updateGame();
 	}
 
-
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(handler != null) handler.postDelayed(timer, 1000);
+	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
@@ -380,5 +384,9 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 				gameInfo.getQueAttemptsSpent(),
 				gameInfo.getQueTimePassed());
 		}
+		//Время и кол-во попыток ответа на вопрос обновляется в БД путём приращения старого значения,
+		//соответственно счётсик времени и попыток нужно сбрасывать после каждого вызова метода updateGame()
+		gameInfo.setQueAttemptsSpent(0);
+		gameInfo.setQueTimePassed(0);
 	}
 }
