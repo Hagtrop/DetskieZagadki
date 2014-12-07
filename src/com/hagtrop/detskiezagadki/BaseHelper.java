@@ -122,7 +122,9 @@ public class BaseHelper extends SQLiteOpenHelper {
 	}
 	
 	private void copyBaseFromAssets(){
+		Log.d("mLog", "---------------------------");
 		Log.d("mLog", "copyBaseFromAssets()");
+		Log.d("mLog", "---------------------------");
 		AssetManager assetManager = mContext.getResources().getAssets();
 		InputStream input = null;
 	    OutputStream output = null;
@@ -190,6 +192,7 @@ public class BaseHelper extends SQLiteOpenHelper {
 	}
 	
 	void newGame(int gameType, boolean useAttempts, boolean useTimer){
+		Log.d("mLog", "->->-BaseHelper.newGame()->->-");
 		SQLiteDatabase database = getWritableDatabase();
 		deleteOldGames(database);
 		tableName = getTableNameByGameType(gameType, useAttempts, useTimer);
@@ -224,9 +227,11 @@ public class BaseHelper extends SQLiteOpenHelper {
 			
 		}
 		database.close();
+		Log.d("mLog", "-<-<-BaseHelper.newGame()-<-<-");
 	}
 	
 	void deleteOldGames(SQLiteDatabase database){
+		Log.d("mLog", "->->-BaseHelper.deleteOldGames()->->-");
 		//Удаляем все таблицы незавершённых игр, если такие существуют
 		database.execSQL("DROP TABLE IF EXISTS " + EASY_SIMPLE_GAME);
 		database.execSQL("DROP TABLE IF EXISTS " + MEDIUM_SIMPLE_GAME);
@@ -235,9 +240,11 @@ public class BaseHelper extends SQLiteOpenHelper {
 		database.execSQL("DROP TABLE IF EXISTS " + EASY_TEST_GAME);
 		database.execSQL("DROP TABLE IF EXISTS " + MEDIUM_TEST_GAME);
 		database.execSQL("DROP TABLE IF EXISTS " + HARD_TEST_GAME);
+		Log.d("mLog", "-<-<-BaseHelper.deleteOldGames()-<-<-");
 	}
 	
 	Bundle getSaved(){
+		Log.d("mLog", "->->-BaseHelper.getSaved->->-");
 		Bundle bundle = null;
 		SQLiteDatabase database = getWritableDatabase();
 		Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?, ?, ?, ?)", 
@@ -276,6 +283,7 @@ public class BaseHelper extends SQLiteOpenHelper {
 				bundle.putBoolean("useTimer", true);
 			}
 		}
+		Log.d("mLog", "-<-<-BaseHelper.getSaved-<-<-");
 		return bundle;
 	}
 

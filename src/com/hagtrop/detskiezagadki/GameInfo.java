@@ -41,8 +41,8 @@ public class GameInfo {
 	}
 	
 	void addQueTimePassed(long millis){
-		setQueTimePassed(getQueTimePassed() + millis);
-		setTimePassed(getTimePassed() + millis);
+		setQueTimePassed(queTimePassed + millis);
+		setTimePassed(timePassed + millis);
 	}
 	
 	long getTimePassed(){
@@ -137,16 +137,16 @@ public class GameInfo {
 	}
 	
 	void addAttemptsSpent(int count){
-		setAttemptsSpent(getAttemptsSpent() + count);
+		setAttemptsSpent(attemptsSpent + count);
 	}
 	
 	void addQueAttemptsSpent(int count){
-		setQueAttemptsSpent(getQueAttemptsSpent() + count);
+		setQueAttemptsSpent(queAttemptsSpent + count);
 		addAttemptsSpent(count);
 	}
 	
 	int getAttemptsRemaining(){
-		return getAttemptsLimit() - getAttemptsSpent();
+		return attemptsLimit - attemptsSpent;
 	}
 	
 	void setGameOver(boolean isOver){

@@ -47,6 +47,7 @@ public class MyCursorLoader extends CursorLoader{
 	}
 	
 	public Cursor loadInBackground(){
+		Log.d("mLog", "->->-MyCursorLoader.loadInBackground()->->-");
 		SQLiteDatabase database = baseHelper.getWritableDatabase();
 		Cursor cursor = null;
 		switch(queryIndex){
@@ -61,7 +62,7 @@ public class MyCursorLoader extends CursorLoader{
 			break;
 		default: break;
 		}
-		
+		Log.d("mLog", "-<-<-MyCursorLoader.loadInBackground()-<-<-");
 		return cursor;
 	}
 

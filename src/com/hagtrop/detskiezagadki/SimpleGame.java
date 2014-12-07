@@ -1,7 +1,6 @@
 package com.hagtrop.detskiezagadki;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
@@ -46,6 +45,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a1_simple_game);
+		Log.d("mLog", "->->-SimpleGame.onCreate()->->-");
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null){
@@ -114,10 +114,12 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		
 		database = baseHelper.getWritableDatabase();
 		getSupportLoaderManager().initLoader(ARRAY_LOADER, null, this);
+		Log.d("mLog", "-<-<-SimpleGame.onCreate()-<-<-");
 	}
 	
 	@Override
 	protected void onPause() {
+		Log.d("mLog", "->->-SimpleGame.onPause()->->-");
 		super.onPause();
 		handler.removeCallbacks(timer);
 		updateGame();
@@ -126,6 +128,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Log.d("mLog", "->->-SimpleGame.onResume()->->-");
 		if(handler != null) handler.postDelayed(timer, 1000);
 	}
 
@@ -145,6 +148,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		Log.d("mLog", "->->-SimpleGame.onLoadFinished()->->-");
 		switch(loader.getId()){
 		//Сохраняем в ArrayList параметры и характеристики вопросов для дальнейшей сортировки
 		case ARRAY_LOADER:
@@ -221,7 +225,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 				focusBtnNum = 0;
 				
 				//Запускаем таймер
-				Handler.Callback hCallback = new Handler.Callback() {	
+				Handler.Callback timerCallback = new Handler.Callback() {	
 					@Override
 					public boolean handleMessage(Message msg) {
 						if(msg.what == 0 && gameInfo.USE_TIMER){
@@ -231,7 +235,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 						return false;
 					}
 				};
-				handler = new Handler(hCallback);
+				handler = new Handler(timerCallback);
 				timer = new MyTimer(handler, timeTV, gameInfo);
 				handler.postDelayed(timer, 1000);
 				
@@ -269,6 +273,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	
 	//Асинхронно загружаем вопрос, используя LoaderManager
 	private void loadQuestion(int queId){
+		Log.d("mLog", "->->-SimpleGame.loadQuestion()->->-");
 		Bundle bundle = new Bundle();
 		bundle.putInt("queId", queId);
 		getSupportLoaderManager().restartLoader(QUESTION_LOADER, bundle, this);
@@ -377,6 +382,7 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 	}
 	
 	private void updateGame(){
+		Log.d("mLog", "->->-SimpleGame.updateGame()->->-");
 		if(!gameInfo.gameOver()){
 		baseHelper.updateGame(
 				queStatusList.get(gameInfo.getQueIndex()).getId(), 

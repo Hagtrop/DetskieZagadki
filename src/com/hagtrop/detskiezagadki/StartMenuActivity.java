@@ -2,7 +2,6 @@ package com.hagtrop.detskiezagadki;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +28,8 @@ public class StartMenuActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a0_start_menu);
         
+        Log.d("mLog", "---StartMenuActivity.onCreate(){...---");
+        
         headerTV = (TextView) findViewById(R.id.a0_headerTV);
         
         simpleBtn = (Button) findViewById(R.id.a0_simpleBtn);
@@ -54,9 +55,15 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 	protected void onResume() {
 		super.onResume();
 		BaseHelper baseHelper = BaseHelper.getInstance(this);
-        savedGameInfo = baseHelper.getSaved();
-        if(savedGameInfo != null) continueBtn.setEnabled(true);
-        else continueBtn.setEnabled(false);
+		FindSavedGameTask task = new FindSavedGameTask(baseHelper, new OnAsyncTaskComplete() {
+			@Override
+			public void onComplete(Bundle params) {
+				savedGameInfo = params;
+				if(savedGameInfo != null) continueBtn.setEnabled(true);
+		        else continueBtn.setEnabled(false);
+			}
+		});
+		task.execute();
         baseHelper.close();
 	}
 
@@ -110,6 +117,7 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 	}
 	
 	private void startGame(int type, boolean useAttemptsLimit, boolean useTimer, boolean newGame){
+		Log.d("mLog", "START: " + System.currentTimeMillis());
 		Log.d("mLog", "gameType: " + type);
 		Log.d("mLog", "useAttemptsLimit: " + useAttemptsLimit);
 		Log.d("mLog", "useTimer: " + useTimer);
@@ -127,12 +135,11 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		intent.putExtra("useTimer", useTimer);
 		
 		startActivityForResult(intent, 1);
+		Log.d("mLog", "END: " + System.currentTimeMillis());
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		showDifficultyBtns(false);
 	}
-	
-	
 }
