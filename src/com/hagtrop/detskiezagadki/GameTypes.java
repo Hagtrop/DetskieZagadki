@@ -1,38 +1,40 @@
 package com.hagtrop.detskiezagadki;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
-import android.util.Log;
-
 public final class GameTypes {
-	private static HashMap<String, Pare> straight;
-	private static HashMap<Pare, String> inversed;
+	private static HashMap<String, Params> straight;
+	private static HashMap<Params, String> inversed;
 	
-	//private static final BiMap tables = new BiMap();
+	public static final int SIMPLE = 1;
+	public static final int TEST = 2;
+	
 	static{
-		straight = new HashMap<String, Pare>();
-		inversed = new HashMap<Pare, String>();
-		put("easy_simple_game", "simple", false, false);
-		put("medium_simple_game", "simple", true, false);
-		put("hard_simple_game", "simple", true, true);
+		straight = new HashMap<String, Params>();
+		inversed = new HashMap<Params, String>();
 		
-		put("easy_test_game", "test", false, false);
-		put("medium_test_game", "test", true, false);
-		put("hard_test_game", "test", true, true);
+		put(BaseHelper.EASY_SIMPLE_GAME, SIMPLE, false, false);
+		put(BaseHelper.MEDIUM_SIMPLE_GAME, SIMPLE, true, false);
+		put(BaseHelper.HARD_SIMPLE_GAME, SIMPLE, true, true);
+		
+		put(BaseHelper.EASY_TEST_GAME, TEST, false, false);
+		put(BaseHelper.MEDIUM_TEST_GAME, TEST, true, false);
+		put(BaseHelper.HARD_TEST_GAME, TEST, true, true);
 	}
 	
-	private static void put(String table, String type, boolean attemptsLimit, boolean timeLimit){
-		Pare params = new Pare(type, new boolean[]{attemptsLimit, timeLimit});
+	private static void put(String table, Integer type, boolean attemptsLimit, boolean timeLimit){
+		Params params = new Params(type, new boolean[]{attemptsLimit, timeLimit});
 		straight.put(table, params);
 		inversed.put(params, table);
 	}
 	
-	static String getTableName(String type, boolean attemptsLimit, boolean timeLimit){
-		Pare params = new Pare(type, new boolean[]{attemptsLimit, timeLimit});
+	static String getTableName(Integer type, boolean attemptsLimit, boolean timeLimit){
+		Params params = new Params(type, new boolean[]{attemptsLimit, timeLimit});
 		return inversed.get(params);
 	}
 	
-	static String getGameType(String table){
+	static Integer getGameType(String table){
 		return straight.get(table).getType();
 	}
 	
@@ -40,43 +42,44 @@ public final class GameTypes {
 		return straight.get(table).getDifficulty();
 	}
 	
-	static void logTypes(){
-		Log.d("mLog", "--->--LogTypes--->--");
-		Log.d("mLog", "simple, true, false: " + getTableName("simple", true, false));
-		Log.d("mLog", "medium_simple_game: " + getGameType("medium_simple_game"));
-		Log.d("mLog", "medium_simple_game: " + getDifficultyParams("medium_simple_game")[0] + ", " + getDifficultyParams("medium_simple_game")[1]);
-		Log.d("mLog", "---<--LogTypes--<---");
+	private static class Params{
+		private Integer type;
+		private boolean[] difficulty;
+		
+		Params(Integer type, boolean[] difficulty) {
+			this.type = type;
+			this.difficulty = difficulty;
+		}
+		
+		Integer getType() {return type;}
+		boolean[] getDifficulty() {return difficulty;}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + Arrays.hashCode(difficulty);
+			result = prime * result + ((type == null) ? 0 : type.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Params other = (Params) obj;
+			if (!Arrays.equals(difficulty, other.difficulty))
+				return false;
+			if (type == null) {
+				if (other.type != null)
+					return false;
+			} else if (!type.equals(other.type))
+				return false;
+			return true;
+		}
 	}
-	
-	/*private static class BiMap{
-		private HashMap<String, Pare<String, Boolean[]>> straight;
-		private HashMap<Pare<String, Boolean[]>, String> inversed;
-		
-		BiMap(){
-			straight = new HashMap<String, Pare<String, Boolean[]>>();
-			inversed = new HashMap<Pare<String, Boolean[]>, String>();
-		}
-		
-		void put(String table, String type, boolean attemptsLimit, boolean timeLimit){
-			Pare<String, Boolean[]> params = new Pare<String, Boolean[]>(type, new Boolean[]{attemptsLimit, timeLimit});
-			straight.put(table, params);
-			inversed.put(params, table);
-		}
-		
-		Pare<String, Boolean[]> getGameParams(String table){
-			return straight.get(table);
-		}
-		
-		String getTableName(String type, boolean attemptsLimit, boolean timeLimit){
-			return inversed.get(new Pare<String, Boolean[]>(type, new Boolean[]{attemptsLimit, timeLimit}));
-		}
-		
-		HashMap<String, Pare<String, Boolean[]>> getStraight(){
-			return straight;
-		}
-		
-		HashMap<Pare<String, Boolean[]>, String> getInversed(){
-			return inversed;
-		}
-	}*/
 }

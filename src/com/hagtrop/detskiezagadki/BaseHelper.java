@@ -22,13 +22,13 @@ public class BaseHelper extends SQLiteOpenHelper {
 
 	private Context mContext;
 	
-	private static final String BASE_NAME = "zagadkiDB";
-	private static final String EASY_SIMPLE_GAME = "easy_simple_game";
-	private static final String MEDIUM_SIMPLE_GAME = "medium_simple_game";
-	private static final String HARD_SIMPLE_GAME = "hard_simple_game";
-	private static final String EASY_TEST_GAME = "easy_test_game";
-	private static final String MEDIUM_TEST_GAME = "medium_test_game";
-	private static final String HARD_TEST_GAME = "hard_test_game";
+	static final String BASE_NAME = "zagadkiDB";
+	static final String EASY_SIMPLE_GAME = "easy_simple_game";
+	static final String MEDIUM_SIMPLE_GAME = "medium_simple_game";
+	static final String HARD_SIMPLE_GAME = "hard_simple_game";
+	static final String EASY_TEST_GAME = "easy_test_game";
+	static final String MEDIUM_TEST_GAME = "medium_test_game";
+	static final String HARD_TEST_GAME = "hard_test_game";
 	
 	private static File BASE_FILE;
 	private static BaseHelper bhInstance;
@@ -176,12 +176,12 @@ public class BaseHelper extends SQLiteOpenHelper {
 	static public String getTableNameByGameType(int gameType, boolean useAttempts, boolean useTimer){
 		String name = null;
 		switch(gameType){
-		case StartMenuActivity.SIMPLE_GAME:
+		case GameTypes.SIMPLE:
 			if(!useAttempts && !useTimer) name = EASY_SIMPLE_GAME;
 			else if(useAttempts && !useTimer) name = MEDIUM_SIMPLE_GAME;
 			else if(useAttempts && useTimer) name = HARD_SIMPLE_GAME;
 			break;
-		case StartMenuActivity.TEST_GAME:
+		case GameTypes.TEST:
 			if(!useAttempts && !useTimer) name = EASY_TEST_GAME;
 			else if(useAttempts && !useTimer) name = MEDIUM_TEST_GAME;
 			else if(useAttempts && useTimer) name = HARD_TEST_GAME;
@@ -191,12 +191,12 @@ public class BaseHelper extends SQLiteOpenHelper {
 		return name;
 	}
 	
-	void newGame(int gameType, boolean useAttempts, boolean useTimer){
+	void newTable(String tableName){
 		Log.d("mLog", "->->-BaseHelper.newGame()->->-");
+		this.tableName = tableName;
+		String createQuery = "CREATE TABLE " + tableName + "(question_id INTEGER, status INTEGER DEFAULT 0, attempts INTEGER DEFAULT 0, time INTEGER DEFAULT 0)";
 		SQLiteDatabase database = getWritableDatabase();
 		deleteOldGames(database);
-		tableName = getTableNameByGameType(gameType, useAttempts, useTimer);
-		String createQuery = "CREATE TABLE " + tableName + "(question_id INTEGER, status INTEGER DEFAULT 0, attempts INTEGER DEFAULT 0, time INTEGER DEFAULT 0)";
 		database.execSQL(createQuery);
 		
 		//Загружаем данные из таблицы вопросов, сортируем вопросы и наполняем отсортированным списком таблицу simple_game
@@ -250,38 +250,8 @@ public class BaseHelper extends SQLiteOpenHelper {
 		Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?, ?, ?, ?)", 
 				new String[]{EASY_SIMPLE_GAME, MEDIUM_SIMPLE_GAME, HARD_SIMPLE_GAME, EASY_TEST_GAME, MEDIUM_TEST_GAME, HARD_TEST_GAME});
 		if(cursor.moveToFirst()){
-			String name = cursor.getString(0);
 			bundle = new Bundle();
-			if(name.equals(EASY_SIMPLE_GAME)){
-				bundle.putInt("gameType", StartMenuActivity.SIMPLE_GAME);
-				bundle.putBoolean("useAttemptsLimit", false);
-				bundle.putBoolean("useTimer", false);
-			}
-			else if(name.equals(MEDIUM_SIMPLE_GAME)){
-				bundle.putInt("gameType", StartMenuActivity.SIMPLE_GAME);
-				bundle.putBoolean("useAttemptsLimit", true);
-				bundle.putBoolean("useTimer", false);
-			}
-			else if(name.equals(HARD_SIMPLE_GAME)){
-				bundle.putInt("gameType", StartMenuActivity.SIMPLE_GAME);
-				bundle.putBoolean("useAttemptsLimit", true);
-				bundle.putBoolean("useTimer", true);
-			}
-			else if(name.equals(EASY_TEST_GAME)){
-				bundle.putInt("gameType", StartMenuActivity.TEST_GAME);
-				bundle.putBoolean("useAttemptsLimit", false);
-				bundle.putBoolean("useTimer", false);
-			}
-			else if(name.equals(MEDIUM_TEST_GAME)){
-				bundle.putInt("gameType", StartMenuActivity.TEST_GAME);
-				bundle.putBoolean("useAttemptsLimit", true);
-				bundle.putBoolean("useTimer", false);
-			}
-			else if(name.equals(HARD_TEST_GAME)){
-				bundle.putInt("gameType", StartMenuActivity.TEST_GAME);
-				bundle.putBoolean("useAttemptsLimit", true);
-				bundle.putBoolean("useTimer", true);
-			}
+			bundle.putString("table", cursor.getString(0));
 		}
 		Log.d("mLog", "-<-<-BaseHelper.getSaved-<-<-");
 		return bundle;

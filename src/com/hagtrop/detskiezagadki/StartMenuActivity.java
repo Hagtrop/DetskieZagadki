@@ -10,14 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StartMenuActivity extends Activity implements OnClickListener{
-	Bundle savedGameInfo;
 	
 	private TextView headerTV;
 	private Button simpleBtn, variantsBtn, continueBtn, easyBtn, mediumBtn, hardBtn;
-	private int gameType = SIMPLE_GAME;
-	
-	public static final int SIMPLE_GAME = 1;
-	public static final int TEST_GAME = 2;
+	private int gameType;
+	private boolean useAttemptsLimit, useTimer;
 	
 	/*public static final int EASY_GAME = 1;
 	public static final int MEDIUM_GAME = 2;
@@ -49,11 +46,6 @@ public class StartMenuActivity extends Activity implements OnClickListener{
         
         hardBtn = (Button) findViewById(R.id.a0_hardBtn);
         hardBtn.setOnClickListener(this);
-        
-        GameTypes.logTypes();
-        Pare params1 = new Pare("simple", new boolean[]{true, false});
-        Pare params2 = new Pare("simple", new boolean[]{true, false});
-        if(params1.equals(params2)) Log.d("mLog", "!!! TRUE"); else Log.d("mLog", "!!! FALSE");
     }
     
     @Override
@@ -62,9 +54,15 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		BaseHelper baseHelper = BaseHelper.getInstance(this);
 		FindSavedGameTask task = new FindSavedGameTask(baseHelper, new OnAsyncTaskComplete() {
 			@Override
-			public void onComplete(Bundle params) {
-				savedGameInfo = params;
-				if(savedGameInfo != null) continueBtn.setEnabled(true);
+			public void onComplete(Bundle result) {
+				if(result != null){
+					String table = result.getString("table");
+					gameType = GameTypes.getGameType(table);
+					useAttemptsLimit = GameTypes.getDifficultyParams(table)[0];
+					useTimer = GameTypes.getDifficultyParams(table)[1];
+					
+					continueBtn.setEnabled(true);
+				}
 		        else continueBtn.setEnabled(false);
 			}
 		});
@@ -76,27 +74,31 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.a0_simpleBtn:
-			gameType = SIMPLE_GAME;
+			gameType = GameTypes.SIMPLE;
 			showDifficultyBtns(true);
-			break;
+			return;
 		case R.id.a0_variantsBtn:
-			gameType = TEST_GAME;
+			gameType = GameTypes.TEST;
 			showDifficultyBtns(true);
-			break;
+			return;
 		case R.id.a0_continueBtn:
-			startGame(savedGameInfo.getInt("gameType"), savedGameInfo.getBoolean("useAttemptsLimit"), savedGameInfo.getBoolean("useTimer"), false);
-			break;
+			startGame();
+			return;
 		case R.id.a0_easyBtn:
-			startGame(gameType, false, false, true);
+			useAttemptsLimit = false;
+			useTimer = false;
 			break;
 		case R.id.a0_mediumBtn:
-			startGame(gameType, true, false, true);
+			useAttemptsLimit = true;
+			useTimer = false;
 			break;
 		case R.id.a0_hardBtn:
-			startGame(gameType, true, true, true);
+			useAttemptsLimit = true;
+			useTimer = true;
 			break;
 		default: break;
 		}
+		createNewGame();
 	}
 	
 	private void showDifficultyBtns(boolean visible){
@@ -121,21 +123,33 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		hardBtn.setVisibility(levels);
 	}
 	
-	private void startGame(int type, boolean useAttemptsLimit, boolean useTimer, boolean newGame){
+	private void createNewGame(){
+		BaseHelper baseHelper = BaseHelper.getInstance(this);
+		CreateNewGameTask task = new CreateNewGameTask(baseHelper, GameTypes.getTableName(gameType, useAttemptsLimit, useTimer), new OnAsyncTaskComplete() {
+			
+			@Override
+			public void onComplete(Bundle params) {
+				startGame();
+			}
+		});
+		task.execute();
+		baseHelper.close();
+	}
+	
+	private void startGame(){
 		Log.d("mLog", "START: " + System.currentTimeMillis());
-		Log.d("mLog", "gameType: " + type);
+		Log.d("mLog", "gameType: " + gameType);
 		Log.d("mLog", "useAttemptsLimit: " + useAttemptsLimit);
 		Log.d("mLog", "useTimer: " + useTimer);
 		Intent intent = new Intent();
-		switch(type){
-		case SIMPLE_GAME:
+		switch(gameType){
+		case GameTypes.SIMPLE:
 			intent.setClass(this, SimpleGame.class);
 			break;
-		case TEST_GAME:
+		case GameTypes.TEST:
 			break;
 		default: break;
 		}
-		intent.putExtra("createNewGame", newGame);
 		intent.putExtra("useAttemptsLimit", useAttemptsLimit);
 		intent.putExtra("useTimer", useTimer);
 		

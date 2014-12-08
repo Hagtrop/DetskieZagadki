@@ -109,8 +109,6 @@ public class SimpleGame extends FragmentActivity implements LoaderCallbacks<Curs
 		for(Button btn : lettersBtns) btn.setOnClickListener(lettersOnClickListener);
 				
 		baseHelper = BaseHelper.getInstance(this);
-		//Создаём таблицу новой игры, если требуется 
-		if(extras.getBoolean("createNewGame")) baseHelper.newGame(StartMenuActivity.SIMPLE_GAME, gameInfo.USE_ATTEMPTS_LIMIT, gameInfo.USE_TIMER);
 		
 		database = baseHelper.getWritableDatabase();
 		getSupportLoaderManager().initLoader(ARRAY_LOADER, null, this);

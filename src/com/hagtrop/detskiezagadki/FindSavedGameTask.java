@@ -22,7 +22,6 @@ public class FindSavedGameTask extends AsyncTask<Void, Void, Bundle> {
 
 	@Override
 	protected void onPostExecute(Bundle result) {
-		// TODO Auto-generated method stub
 		onTaskComplete.onComplete(result);
 	}
 }
