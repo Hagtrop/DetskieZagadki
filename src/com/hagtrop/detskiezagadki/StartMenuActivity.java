@@ -49,6 +49,11 @@ public class StartMenuActivity extends Activity implements OnClickListener{
         
         hardBtn = (Button) findViewById(R.id.a0_hardBtn);
         hardBtn.setOnClickListener(this);
+        
+        GameTypes.logTypes();
+        Pare params1 = new Pare("simple", new boolean[]{true, false});
+        Pare params2 = new Pare("simple", new boolean[]{true, false});
+        if(params1.equals(params2)) Log.d("mLog", "!!! TRUE"); else Log.d("mLog", "!!! FALSE");
     }
     
     @Override
