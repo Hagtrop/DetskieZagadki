@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="SimpleGame"></activity>
+        <activity android:name="SimpleGameActivity"></activity>
+        <activity android:name="TestGameActivity"></activity>
     </application>
 
 </manifest>

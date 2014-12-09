@@ -32,7 +32,6 @@ public class BaseHelper extends SQLiteOpenHelper {
 	
 	private static File BASE_FILE;
 	private static BaseHelper bhInstance;
-	private boolean testGameExists = false;
 	private String tableName;
 	
 	synchronized static public BaseHelper getInstance(Context context){
@@ -69,11 +68,7 @@ public class BaseHelper extends SQLiteOpenHelper {
 
 	}
 	
-	public void deleteTestGame(){
-		testGameExists = false;
-	}
-	
-	public void newTestGame(){
+	/*public void newTestGame(){
 		String deleteQuery, createQuery;
 		deleteQuery = "DROP TABLE IF EXISTS test_game";
 		createQuery = "CREATE TABLE test_game(question_id INTEGER, status INTEGER DEFAULT 0, attempts INTEGER DEFAULT 0, time INTEGER DEFAULT 0)";
@@ -110,11 +105,7 @@ public class BaseHelper extends SQLiteOpenHelper {
 		}
 		database.close();
 		testGameExists = true;
-	}
-	
-	public boolean testGameExists(){
-		return testGameExists;
-	}
+	}*/
 	
 	public void printData(){
 		Log.d("mLog", "BaseName=" + getDatabaseName());
@@ -150,13 +141,13 @@ public class BaseHelper extends SQLiteOpenHelper {
 	    }
 	}
 	
-	void updateTestGame(int queId, int attempts, int status){
+	/*void updateTestGame(int queId, int attempts, int status){
 		SQLiteDatabase database = getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put("attempts", attempts);
 		cv.put("status", status);
 		database.update("test_game", cv, "question_id=?", new String[]{String.valueOf(queId)});
-	}
+	}*/
 	
 	//-------------------------------------------------------------------------//
 	

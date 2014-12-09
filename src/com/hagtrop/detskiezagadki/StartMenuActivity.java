@@ -144,7 +144,7 @@ public class StartMenuActivity extends Activity implements OnClickListener{
 		Intent intent = new Intent();
 		switch(gameType){
 		case GameTypes.SIMPLE:
-			intent.setClass(this, SimpleGame.class);
+			intent.setClass(this, SimpleGameActivity.class);
 			break;
 		case GameTypes.TEST:
 			break;
