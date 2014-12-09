@@ -61,6 +61,10 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 		answerTV = (TextView) findViewById(R.id.a2_answerTV);
 		timerTV = (TextView) findViewById(R.id.a2_timerTV);
 		
+		//Отображаем/скрываем счётчик оставшихся попыток
+		if(gameInfo.USE_ATTEMPTS_LIMIT) attemptsTV.setVisibility(View.VISIBLE);
+		else attemptsTV.setVisibility(View.GONE);
+		
 		//Отображаем таймер, если выбран режим с таймером
 		if(gameInfo.USE_TIMER) timerTV.setVisibility(View.VISIBLE);
 		else timerTV.setVisibility(View.GONE);
@@ -300,12 +304,6 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 		}
 	}
 	
-	void showTimeIsOverMessage(){
-		FragmentManager fManager = getSupportFragmentManager();
-		TimeIsOverDialog dialog = new TimeIsOverDialog();
-		dialog.show(fManager, "time_is_over_dialog");
-	}
-	
 	private void printArray(ArrayList<QueStatus> mArray){
 		for(QueStatus qStatus : mArray){
 			Log.d("mLog", "queId=" + qStatus.getId() + " queStatus=" + qStatus.getStatus());
@@ -324,6 +322,12 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 		//соответственно счётсик времени и попыток нужно сбрасывать после каждого вызова метода updateGame()
 		gameInfo.setQueAttemptsSpent(0);
 		gameInfo.setQueTimePassed(0);
+	}
+	
+	void showTimeIsOverMessage(){
+		FragmentManager fManager = getSupportFragmentManager();
+		TimeIsOverDialog dialog = new TimeIsOverDialog();
+		dialog.show(fManager, "time_is_over_dialog");
 	}
 	
 	void showNoAttemptsDialog(){
