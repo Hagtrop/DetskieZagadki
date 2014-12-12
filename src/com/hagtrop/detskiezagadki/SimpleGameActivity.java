@@ -19,10 +19,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class SimpleGameActivity extends FragmentActivity implements LoaderCallbacks<Cursor>, OnClickListener, NoticeDialogListener {
 	TextView questionTV, answerTV, progressTV, levelTV, timeTV, attemptsTV;
+	ProgressBar progressBar;
 	Button checkBtn;
 	LinearLayout answerLayout;
 	
@@ -56,6 +58,7 @@ public class SimpleGameActivity extends FragmentActivity implements LoaderCallba
 		else gameInfo = new GameInfo(false, false);
 		
 		progressTV = (TextView) findViewById(R.id.a1_progressTV);
+		progressBar = (ProgressBar) findViewById(R.id.a1_progressBar);
 		levelTV = (TextView) findViewById(R.id.a1_levelTV);
 		attemptsTV = (TextView) findViewById(R.id.a1_attemptsTV);
 		timeTV = (TextView) findViewById(R.id.a1_timeTV);
@@ -175,10 +178,11 @@ public class SimpleGameActivity extends FragmentActivity implements LoaderCallba
 				} while(cursor.moveToNext());
 				
 				gameInfo.setAttemptsLimit(queStatusList.size()*2);
-				attemptsTV.setText("Попыток: " + String.valueOf(gameInfo.getAttemptsLimit() - gameInfo.getAttemptsSpent()));
+				attemptsTV.setText("Попыток " + String.valueOf(gameInfo.getAttemptsLimit() - gameInfo.getAttemptsSpent()));
 				gameInfo.setTimeLimit(10 * 1000 * queStatusList.size());
 			}
 			printArray(queStatusList);
+			progressBar.setMax(queStatusList.size());
 			loadQuestion(queStatusList.get(gameInfo.getQueIndex()).getId());
 			break;
 		//Извлекаем вопрос и ответ
@@ -191,7 +195,8 @@ public class SimpleGameActivity extends FragmentActivity implements LoaderCallba
 				
 				Log.d("mLog", "index = " + gameInfo.getQueIndex());
 				
-				progressTV.setText(getString(R.string.a1_progressTV) + " " + (gameInfo.getQueIndex()+1) + "/" + queStatusList.size());
+				progressTV.setText("Загадка " + (gameInfo.getQueIndex()+1) + "/" + queStatusList.size());
+				progressBar.setProgress(gameInfo.getQueIndex()+1);
 				levelTV.setText(getString(R.string.a1_levelTV) + " " + gameInfo.getQueLevel());
 				questionTV.setText(gameInfo.getQuestion());
 				answerTV.setText(gameInfo.getAnswer());
@@ -347,7 +352,7 @@ public class SimpleGameActivity extends FragmentActivity implements LoaderCallba
 	@Override
 	public void onDialogDismiss(DialogFragment dialog, String dialogType) {
 		if(dialogType.equals(TrueFalseDialog.DIALOG_TYPE)){
-			attemptsTV.setText("Попыток: " + gameInfo.getAttemptsRemaining());
+			attemptsTV.setText("Попыток " + gameInfo.getAttemptsRemaining());
 			if(gameInfo.USE_ATTEMPTS_LIMIT && gameInfo.getAttemptsRemaining() < 1 && !(gameInfo.getQueIndex() == queStatusList.size()-1 && gameInfo.goodAnswer())){
 				showNoAttemptsDialog();
 			}

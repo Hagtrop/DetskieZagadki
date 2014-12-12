@@ -10,18 +10,18 @@
     <string name="a0_mediumBtn">Средне</string>
     <string name="a0_hardBtn">Тяжело</string>
     
-    <string name="a1_progressTV">Прогресс:</string>
+    <string name="a1_progressTV">Загадка</string>
     <string name="a1_levelTV">Уровень</string>
     <string name="a1_timeTV">00:00</string>
     <string name="a1_questionTV">Текст загадки</string>
     <string name="a1_answerTV">Текст ответа</string>
-    <string name="a1_attemptsTV">Попыток:</string>
+    <string name="a1_attemptsTV">Попыток</string>
     <string name="a1_checkBtn">Проверить</string>
     <string name="a1_nextBtn">Дальше</string>
     
-    <string name="a2_progressTV">Прогресс:</string>
+    <string name="a2_progressTV">Загадка</string>
     <string name="a2_levelTV">Уровень</string>
-    <string name="a2_attemptsTV">Осталось попыток:</string>
+    <string name="a2_attemptsTV">Попыток</string>
     <string name="a2_questionTV">Текст загадки</string>
     <string name="a2_answerTV">Ответ:</string>
     <string name="a2_timeTV">00:00</string>

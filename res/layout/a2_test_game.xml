@@ -2,19 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_repeat"
     android:orientation="vertical" >
+
+    <ProgressBar
+        android:id="@+id/a2_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
 
-        <TextView
-            android:id="@+id/a2_progressTV"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/a2_progressTV" />
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/a2_progressTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/a2_progressTV" />
+
+            <TextView
+                android:id="@+id/a2_levelTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/a2_levelTV" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -25,22 +48,16 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/a2_levelTV"
+                android:id="@+id/a2_timerTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/a2_levelTV" />
+                android:text="@string/a2_timeTV" />
 
             <TextView
                 android:id="@+id/a2_attemptsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/a2_attemptsTV" />
-
-            <TextView
-                android:id="@+id/a2_timerTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/a2_timeTV" />
 
         </LinearLayout>
 
@@ -52,12 +69,22 @@
         android:layout_height="wrap_content"
         android:text="@string/a2_answerTV" />
 
-    <TextView
-        android:id="@+id/a2_questionTV"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/a2_questionTV" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/a2_questionTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/a2_questionTV" />
+
+    </LinearLayout>
 
     <TableLayout
         android:layout_width="wrap_content"
