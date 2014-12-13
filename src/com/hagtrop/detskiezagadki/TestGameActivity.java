@@ -18,10 +18,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLayoutChangeListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TestGameActivity extends FragmentActivity implements OnClickListener, LoaderCallbacks<Cursor>, NoticeDialogListener{
 	TextView progressTV, levelTV, attemptsTV, questionTV, answerTV, timerTV;
+	ProgressBar progressBar;
 	
 	ArrayList<Button> answerBtns;
 	
@@ -60,6 +62,7 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 		questionTV = (TextView) findViewById(R.id.a2_questionTV);
 		answerTV = (TextView) findViewById(R.id.a2_answerTV);
 		timerTV = (TextView) findViewById(R.id.a2_timerTV);
+		progressBar = (ProgressBar) findViewById(R.id.a2_progressBar);
 		
 		//Отображаем/скрываем счётчик оставшихся попыток
 		if(gameInfo.USE_ATTEMPTS_LIMIT) attemptsTV.setVisibility(View.VISIBLE);
@@ -195,6 +198,7 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 				gameInfo.setTimeLimit(10 * 1000 * queStatusList.size());
 			}
 			printArray(queStatusList);
+			progressBar.setMax(queStatusList.size());
 			loadQuestion(queStatusList.get(gameInfo.getQueIndex()).getId());
 			break;
 		case QUESTION_LOADER:
@@ -206,7 +210,8 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 				
 				//Log.d("mLog", currentQuestion.getQuestion());
 				//Log.d("mLog", currentQuestion.getAnswer());
-				progressTV.setText(getString(R.string.a1_progressTV) + " " + (gameInfo.getQueIndex()+1) + "/" + queStatusList.size());
+				progressTV.setText("Загадка " + (gameInfo.getQueIndex()+1) + "/" + queStatusList.size());
+				progressBar.setProgress(gameInfo.getQueIndex()+1);
 				levelTV.setText(getString(R.string.a1_levelTV) + " " + gameInfo.getQueLevel());
 				questionTV.setText(gameInfo.getQuestion());
 				answerTV.setText(gameInfo.getAnswer());
@@ -273,7 +278,7 @@ public class TestGameActivity extends FragmentActivity implements OnClickListene
 	@Override
 	public void onDialogDismiss(DialogFragment dialog, String dialogType) {
 		if(dialogType.equals(TrueFalseDialog.DIALOG_TYPE)){
-			attemptsTV.setText("Попыток: " + gameInfo.getAttemptsRemaining());
+			attemptsTV.setText("Попыток " + gameInfo.getAttemptsRemaining());
 			if(gameInfo.USE_ATTEMPTS_LIMIT && gameInfo.getAttemptsRemaining() < 1 && !(gameInfo.getQueIndex() == queStatusList.size()-1 && gameInfo.goodAnswer())){
 				showNoAttemptsDialog();
 			}
